@@ -24,34 +24,40 @@
 
     <TextView
         android:id="@+id/sail_name_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="25dp"
         android:text="Название товара"
         android:textSize="20dp"
+        android:textAlignment="center"
         android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView3" />
 
     <TextView
         android:id="@+id/sail_old_price_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="23dp"
         android:layout_marginTop="3dp"
         android:text="Цена"
         android:textSize="18dp"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sail_name_tv" />
 
     <TextView
         android:id="@+id/sail_new_price_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="23dp"
         android:text="Цена"
         android:textSize="18dp"
+        android:textAlignment="center"
         android:textColor="#C8D604"
         android:layout_marginTop="3dp"
+        android:layout_marginHorizontal="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sail_old_price_tv" />

@@ -4,20 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ShopActivity extends AppCompatActivity {
 
-    //Массив данных о скидках
-    ArrayList<Sail> sailData = new ArrayList<>();
-
     //Эл. разметки
     ImageView shopLogo;
     RecyclerView sailList;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +28,37 @@ public class ShopActivity extends AppCompatActivity {
         //Инициализация эл. разметки
         shopLogo = findViewById(R.id.shop_logo_iv);
         sailList = findViewById(R.id.sail_rv);
+        progressBar = findViewById(R.id.progress_bar);
 
         //Назначение картинки магазина
         Picasso.get().load(getIntent().getStringExtra("logoUrl")).into(shopLogo);
 
-        //Заполнение массива
-        sailData.add(new Sail("https://promo.5ka.ru/i/upload/main/%D0%A0%D0%9A%20%D0%BB%D1%83%D0%BA.jpg", "Чипсики ", 100, 90));
-        sailData.add(new Sail("https://promo.5ka.ru/i/upload/main/%D0%A0%D0%9A%20%D0%BB%D1%83%D0%BA.jpg", "Чипсики ", 100, 90));
-        sailData.add(new Sail("https://promo.5ka.ru/i/upload/main/%D0%A0%D0%9A%20%D0%BB%D1%83%D0%BA.jpg", "Чипсики ", 100, 90));
-
-        //Заполнение списка
-        SailListAdapter adapter = new SailListAdapter(this, sailData);
-        sailList.setAdapter(adapter);
+        loadSails.start();
     }
+
+    Thread loadSails = new Thread(new Runnable() {
+        @Override
+        public void run() {
+
+            ArrayList<Sail> sails;
+            try {
+                sails = Parser.pyaterochkaParser();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            ShopActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                        //Заполнение списка
+                        SailListAdapter adapter = new SailListAdapter(ShopActivity.this, sails);
+                        sailList.setAdapter(adapter);
+
+                        //Скрыть строку загрузки
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                }
+            });
+        }
+    });
 }
