@@ -1,11 +1,13 @@
 package com.example.allsails;
 
 public class Shop {
- int logo;
+ String logoUrl;
  String name;
+ int shopId;
 
- public Shop(int logo, String name){
-     this.logo = logo;
+ public Shop(String logoUrl, String name, int shopId){
+     this.logoUrl = logoUrl;
      this.name = name;
+     this.shopId = shopId;
  }
 }
