@@ -41,7 +41,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
         holder.name.setText(obj.name);
 
         //Старая цена
-        holder.oldPrice.setText(obj.oldPrice.split(" ")[0]+obj.oldPrice.split(" ")[1]+",");
+        holder.oldPrice.setText(obj.oldPrice+",");
         holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         //Новая цена

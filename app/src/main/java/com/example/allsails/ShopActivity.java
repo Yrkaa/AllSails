@@ -39,19 +39,34 @@ public class ShopActivity extends AppCompatActivity {
     Thread loadSails = new Thread(new Runnable() {
         @Override
         public void run() {
+            //Множество скидок
+            ArrayList<Sail> sails = new ArrayList<>();
 
-            ArrayList<Sail> sails;
+            //Id магазина
+            int id = ShopActivity.this.getIntent().getIntExtra("id", 0);
+
+            //Выбор парсера в зависимости от id
             try {
-                sails = Parser.pyaterochkaParser();
+                switch (id){
+                    case 1:
+                        sails = Parser.pyaterochkaParser();
+                        break;
+                    case 2:
+                        sails = Parser.diksiParser();
+                        break;
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
+            //Финальное множество скидок
+            ArrayList<Sail> finalSails = sails;
 
             ShopActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                         //Заполнение списка
-                        SailListAdapter adapter = new SailListAdapter(ShopActivity.this, sails);
+                        SailListAdapter adapter = new SailListAdapter(ShopActivity.this, finalSails);
                         sailList.setAdapter(adapter);
 
                         //Скрыть строку загрузки

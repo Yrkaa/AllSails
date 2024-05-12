@@ -22,7 +22,8 @@ public class Parser {
         Elements x1 = doc.getElementsByClass("price-discount");
         for(Element e: x1){
             newP.add(e.child(0).text()+"."+e.child(1).child(0).text());
-            old.add(e.child(1).child(1).text());
+            String str = e.child(1).child(1).text();
+            old.add(str.split(" ")[0]+str.split(" ")[1]);
         }
 
         Elements x2 = doc.getElementsByClass("image-cont");
@@ -36,5 +37,45 @@ public class Parser {
         }
 
         return sails;
+
     }
+
+    public static ArrayList<Sail> diksiParser() throws IOException {
+        ArrayList<Sail> sails = new ArrayList<>();
+
+        for(int i = 1; i <=30; i++){
+            Document doc = Jsoup.connect("https://dixy.ru/catalog/?PAGEN_1="+i).get();
+
+            ArrayList<String> img = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> old = new ArrayList<>();
+            ArrayList<String> newP = new ArrayList<>();
+
+            Elements x1 = doc.getElementsByClass("dixyCatalogItemPrice__pricesset");
+            for(Element e: x1){
+                String str = e.child(0).child(1).text()+"."+e.child(1).text();
+                newP.add(str.substring(0, str.length()-1));
+            }
+
+            Elements x2 = doc.getElementsByClass("dixyCatalogItem__picplacer");
+            for(Element e: x2){
+                img.add(e.child(0).attr("src"));
+                name.add(e.child(0).attr("alt"));
+            }
+
+            Elements x3 = doc.getElementsByClass("dixyCatalogItemPrice__oldprice");
+            for(Element e: x3){
+                old.add(e.text());
+            }
+
+            for(int j = 0; j < img.size(); j++){
+                sails.add(new Sail(img.get(j), name.get(j), /*old.get(j)*/ "1000", newP.get(j)));
+            }
+
+        }
+
+        return sails;
+
+    }
+
 }

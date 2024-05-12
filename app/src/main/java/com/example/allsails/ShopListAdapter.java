@@ -48,7 +48,6 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
             public void onClick(View view) {
                 Intent toShop = new Intent(c, ShopActivity.class);
                 toShop.putExtra("logoUrl", obj.logoUrl);
-                toShop.putExtra("name", obj.name);
                 toShop.putExtra("id", obj.shopId);
                 ((MainActivity) c).startActivity(toShop);
             }
