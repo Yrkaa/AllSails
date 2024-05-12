@@ -2,6 +2,7 @@ package com.example.allsails;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
     LayoutInflater inflater;
 
+    Context c;
+
     //Массив всех скидок
     List<Sail> data;
 
@@ -39,6 +42,12 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
         //Название товара
         holder.name.setText(obj.name);
+
+        //Специальный шрифт
+        Typeface font = Typeface.createFromAsset(c.getAssets(), "fonts/main.ttf");
+        holder.name.setTypeface(font);
+        holder.oldPrice.setTypeface(font);
+        holder.newPrice.setTypeface(font);
 
         //Старая цена
         holder.oldPrice.setText(obj.oldPrice+",");
@@ -73,5 +82,6 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
     public SailListAdapter(Context c, List<Sail> data){
         this.inflater = LayoutInflater.from(c);
         this.data = data;
+        this.c = c;
     }
 }

@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/sail_name_tv"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="30dp"
         android:text="Название товара"
         android:textSize="20dp"
         android:textAlignment="center"
@@ -51,7 +51,7 @@
     <TextView
         android:id="@+id/sail_new_price_tv"
         android:layout_width="match_parent"
-        android:layout_height="23dp"
+        android:layout_height="28dp"
         android:text="Цена"
         android:textSize="18dp"
         android:textAlignment="center"

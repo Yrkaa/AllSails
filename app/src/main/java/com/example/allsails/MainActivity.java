@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Эл. разметки
     RecyclerView shopList;
+    TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Инициализация эл. разметки
         shopList = findViewById(R.id.shops_rv);
+        name = findViewById(R.id.name_tv);
+
+        //Назначение кастомного шрифта
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/main.ttf");
+        name.setTypeface(font);
 
         //Инициализация бд
         db = getBaseContext().openOrCreateDatabase("data.db", MODE_PRIVATE, null);

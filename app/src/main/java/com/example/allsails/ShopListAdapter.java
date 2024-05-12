@@ -2,6 +2,7 @@ package com.example.allsails;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,10 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ViewHo
         //Название магазина
         holder.name.setText(obj.name);
         Picasso.get().load(obj.logoUrl).into(holder.logo);
+
+        //Специальный шрифт
+        Typeface font = Typeface.createFromAsset(c.getAssets(), "fonts/main.ttf");
+        holder.name.setTypeface(font);
 
         //Переход на страницу с информацией
         holder.v.setOnClickListener(new View.OnClickListener() {
