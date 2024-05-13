@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             db.execSQL("CREATE TABLE  IF NOT EXISTS Shops(_id INTEGER PRIMARY KEY AUTOINCREMENT, logo_url TEXT, name TEXT) ");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png', 'Пятёрочка')");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://dixy.ru/images/logo.png', 'Дикси')");
+            db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://magnit.ru/local/markup/src/images/logo/magnit30.svg', 'Магнит')");
             preferences.edit().putBoolean("first", false).apply();
         }
 

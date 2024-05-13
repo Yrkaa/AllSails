@@ -69,13 +69,45 @@ public class Parser {
             }
 
             for(int j = 0; j < img.size(); j++){
-                sails.add(new Sail(img.get(j), name.get(j), /*old.get(j)*/ "1000", newP.get(j)));
+                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j)));
             }
 
         }
 
         return sails;
 
+    }
+
+    public static ArrayList<Sail> magnitParser() throws IOException {
+        ArrayList<Sail> sails = new ArrayList<>();
+
+        for(int i = 0; i <=2500; i+=36){
+            Document doc = Jsoup.connect("https://magnit.ru/promo/?offset="+i).get();
+
+            ArrayList<String> img = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> old = new ArrayList<>();
+            ArrayList<String> newP = new ArrayList<>();
+
+            Elements x1 = doc.getElementsByClass("new-card-product__price");
+            for(Element e: x1){
+                old.add(e.child(1).text());
+                newP.add(e.child(0).text());
+            }
+
+            Elements x2 = doc.getElementsByClass("new-card-product__image-wrap new-card-product__image-wrap-catalog");
+            for (Element e: x2){
+                name.add(e.child(0).attr("alt"));
+                img.add(e.child(0).attr("src"));
+            }
+
+            for(int j = 0; j < img.size(); j++){
+                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j)));
+            }
+
+        }
+
+        return sails;
     }
 
 }
