@@ -54,8 +54,6 @@ public class ShopActivity extends AppCompatActivity {
                     case 2:
                         sails = Parser.diksiParser();
                         break;
-                    case 3:
-                        sails = Parser.magnitParser();
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
