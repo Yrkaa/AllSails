@@ -73,7 +73,7 @@ public class Parser {
             }
 
             for(int j = 0; j < img.size(); j++){
-                sails.add(new Sail(img.get(j), name.get(j), "1000",  newP.get(j)));
+                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j)));
             }
 
         }
