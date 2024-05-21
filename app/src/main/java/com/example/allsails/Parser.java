@@ -1,5 +1,7 @@
 package com.example.allsails;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,6 +57,13 @@ public class Parser {
             for(Element e: x1){
                 String str = e.child(0).child(1).text()+"."+e.child(1).text();
                 newP.add(str.substring(0, str.length()-1));
+
+                try{
+                    String str2 = e.child(2).text();
+                    old.add(str2);
+                } catch (IndexOutOfBoundsException err){
+                    old.add("Цена не указана");
+               }
             }
 
             Elements x2 = doc.getElementsByClass("dixyCatalogItem__picplacer");
@@ -63,13 +72,8 @@ public class Parser {
                 name.add(e.child(0).attr("alt"));
             }
 
-            Elements x3 = doc.getElementsByClass("dixyCatalogItemPrice__oldprice");
-            for(Element e: x3){
-                old.add(e.text());
-            }
-
             for(int j = 0; j < img.size(); j++){
-                sails.add(new Sail(img.get(j), name.get(j), /*old.get(j)*/ "1000", newP.get(j)));
+                sails.add(new Sail(img.get(j), name.get(j), "1000",  newP.get(j)));
             }
 
         }
