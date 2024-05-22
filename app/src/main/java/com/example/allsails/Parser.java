@@ -1,5 +1,7 @@
 package com.example.allsails;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,32 +42,47 @@ public class Parser {
 
     }
 
-    public static ArrayList<Sail> diksiParser() throws IOException {
+    public static ArrayList<Sail> perekrestokParser() throws IOException {
+
         ArrayList<Sail> sails = new ArrayList<>();
 
-        for(int i = 1; i <=30; i++){
-            Document doc = Jsoup.connect("https://dixy.ru/catalog/?PAGEN_1="+i).get();
+
+
+        for(int i = 1; i <=1; i++){
 
             ArrayList<String> img = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
             ArrayList<String> old = new ArrayList<>();
             ArrayList<String> newP = new ArrayList<>();
 
-            Elements x1 = doc.getElementsByClass("dixyCatalogItemPrice__pricesset");
+            Document doc = Jsoup.connect("https://www.perekrestok.ru/cat/d?append=1&page="+i).get();
+
+            Elements x1 = doc.getElementsByClass("product-card__link");
             for(Element e: x1){
-                String str = e.child(0).child(1).text()+"."+e.child(1).text();
-                newP.add(str.substring(0, str.length()-1));
-            }
+                name.add(e.child(0).text());
 
-            Elements x2 = doc.getElementsByClass("dixyCatalogItem__picplacer");
-            for(Element e: x2){
-                img.add(e.child(0).attr("src"));
-                name.add(e.child(0).attr("alt"));
-            }
+                Document card = Jsoup.connect("https://www.perekrestok.ru"+e.attr("href")).get();
 
-            Elements x3 = doc.getElementsByClass("dixyCatalogItemPrice__oldprice");
-            for(Element e: x3){
-                old.add(e.text());
+                Elements cardImg = card.getElementsByClass("iiz__img   ");
+                for(Element cardE: cardImg){
+                    img.add(cardE.attr("src"));
+                    break;
+                }
+
+                Elements cardNew = card.getElementsByClass("price-new");
+                for(Element cardE: cardNew){
+                    String data = cardE.text();
+                    newP.add(data.substring(4, data.length()));
+                    break;
+                }
+
+                Elements cardOld = card.getElementsByClass("price-old");
+                for(Element cardE: cardOld){
+                    String data = cardE.text();
+                    old.add(data.substring(11, data.length()));
+                    break;
+                }
+
             }
 
             for(int j = 0; j < img.size(); j++){
@@ -76,38 +93,6 @@ public class Parser {
 
         return sails;
 
-    }
-
-    public static ArrayList<Sail> magnitParser() throws IOException {
-        ArrayList<Sail> sails = new ArrayList<>();
-
-        for(int i = 0; i <=2500; i+=36){
-            Document doc = Jsoup.connect("https://magnit.ru/promo/?offset="+i).get();
-
-            ArrayList<String> img = new ArrayList<>();
-            ArrayList<String> name = new ArrayList<>();
-            ArrayList<String> old = new ArrayList<>();
-            ArrayList<String> newP = new ArrayList<>();
-
-            Elements x1 = doc.getElementsByClass("new-card-product__price");
-            for(Element e: x1){
-                old.add(e.child(1).text());
-                newP.add(e.child(0).text());
-            }
-
-            Elements x2 = doc.getElementsByClass("new-card-product__image-wrap new-card-product__image-wrap-catalog");
-            for (Element e: x2){
-                name.add(e.child(0).attr("alt"));
-                img.add(e.child(0).attr("src"));
-            }
-
-            for(int j = 0; j < img.size(); j++){
-                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j)));
-            }
-
-        }
-
-        return sails;
     }
 
 }

@@ -52,10 +52,8 @@ public class ShopActivity extends AppCompatActivity {
                         sails = Parser.pyaterochkaParser();
                         break;
                     case 2:
-                        sails = Parser.diksiParser();
+                        sails = Parser.perekrestokParser();
                         break;
-                    case 3:
-                        sails = Parser.magnitParser();
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
