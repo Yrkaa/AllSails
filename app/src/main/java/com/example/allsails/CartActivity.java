@@ -3,6 +3,8 @@ package com.example.allsails;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -13,6 +15,9 @@ public class CartActivity extends AppCompatActivity {
 
     //Массив товаров в корзине
     ArrayList<CartItem> cartData = new ArrayList<>();
+
+    //БД
+    SQLiteDatabase db;
 
     //Эл. разметки
     TextView name;
@@ -27,12 +32,18 @@ public class CartActivity extends AppCompatActivity {
         name = findViewById(R.id.cart_name_tv);
         cartItemsList = findViewById(R.id.cart_items_rv);
 
+        //Инициализация бд
+        db = getBaseContext().openOrCreateDatabase("data.db", MODE_PRIVATE, null);
+
         //Назначение кастомного шрифта
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/main.ttf");
         name.setTypeface(font);
 
         //Заполненение массива товаров
-        cartData.add(new CartItem("https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png", "500", "1000", "ЯиЧкИ", "https://cojo.ru/wp-content/uploads/2022/12/perekrestok-1.webp"));
+        Cursor c = db.rawQuery("SELECT * FROM Cart", null);
+        while(c.moveToNext()){
+            cartData.add(new CartItem(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
+        }
 
         //Заполнение списка товаров
         CartListAdapter adapter = new CartListAdapter(this, cartData);

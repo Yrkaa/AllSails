@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = this.getSharedPreferences("com.example.allsails", MODE_PRIVATE);
         if(preferences.getBoolean("first", true)){
             db.execSQL("CREATE TABLE  IF NOT EXISTS Shops(_id INTEGER PRIMARY KEY AUTOINCREMENT, logo_url TEXT, name TEXT) ");
+            db.execSQL("CREATE TABLE IF NOT EXISTS Cart(_id INTEGER PRIMARY KEY AUTOINCREMENT, shopUrl TEXT, newPrice TEXT, oldPrice TEXT,  name TEXT,  imgUrl TEXT)");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png', 'Пятёрочка')");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://cojo.ru/wp-content/uploads/2022/12/perekrestok-1.webp', 'Перекрёсток')");
             preferences.edit().putBoolean("first", false).apply();
