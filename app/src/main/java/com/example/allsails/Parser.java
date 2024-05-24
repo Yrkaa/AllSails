@@ -46,8 +46,6 @@ public class Parser {
 
         ArrayList<Sail> sails = new ArrayList<>();
 
-
-
         for(int i = 1; i <=1; i++){
 
             ArrayList<String> img = new ArrayList<>();

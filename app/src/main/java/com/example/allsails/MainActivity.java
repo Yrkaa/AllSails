@@ -3,11 +3,14 @@ package com.example.allsails;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     //Эл. разметки
     RecyclerView shopList;
     TextView name;
+    ImageView cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //Инициализация эл. разметки
         shopList = findViewById(R.id.shops_rv);
         name = findViewById(R.id.name_tv);
+        cart = findViewById(R.id.cart_btn);
 
         //Назначение кастомного шрифта
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/main.ttf");
@@ -61,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
         //Заполнение списка магазинов
         adapter = new ShopListAdapter(MainActivity.this, shopData);
         shopList.setAdapter(adapter);
+
+        //Переход в корзину
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toCart = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(toCart);
+            }
+        });
 
     }
 }
