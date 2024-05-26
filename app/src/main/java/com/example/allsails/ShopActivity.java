@@ -20,6 +20,9 @@ public class ShopActivity extends AppCompatActivity {
     RecyclerView sailList;
     ProgressBar progressBar;
 
+    //Адрес на лого магаза
+    String shopUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +34,8 @@ public class ShopActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
 
         //Назначение картинки магазина
-        Picasso.get().load(getIntent().getStringExtra("logoUrl")).into(shopLogo);
+        shopUrl = getIntent().getStringExtra("logoUrl");
+        Picasso.get().load(shopUrl).into(shopLogo);
 
         loadSails.start();
     }
@@ -66,7 +70,7 @@ public class ShopActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                         //Заполнение списка
-                        SailListAdapter adapter = new SailListAdapter(ShopActivity.this, finalSails);
+                        SailListAdapter adapter = new SailListAdapter(ShopActivity.this, finalSails, shopUrl);
                         sailList.setAdapter(adapter);
 
                         //Скрыть строку загрузки
