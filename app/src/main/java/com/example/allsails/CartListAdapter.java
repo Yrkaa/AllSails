@@ -1,6 +1,8 @@
 package com.example.allsails;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,17 +23,20 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     List<CartItem> data;
 
     LayoutInflater inflater;
+    Context c;
 
     //Конструктор
     public CartListAdapter(Context c, List<CartItem> data){
         this.data = data;
         this.inflater = LayoutInflater.from(c);
+        this.c = c;
     }
 
     //Кдасс для объекта списка
     public class ViewHolder extends  RecyclerView.ViewHolder{
         ImageView shop, iv;
         TextView name, oldPrice, newPrice;
+        View v;
 
         public ViewHolder(View v){
             super(v);
@@ -40,6 +45,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             name = v.findViewById(R.id.cart_item_name);
             oldPrice = v.findViewById(R.id.cart_item_old_price);
             newPrice = v.findViewById(R.id.cart_item_new_price);
+            this.v = v;
         }
 
     }
@@ -64,6 +70,25 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
         //Перечеркнутый текст для старой цены
         holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        //Удаление эл. из корзины
+        holder.v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notifyItemRemoved(position);
+                data.remove(position);
+                int sqlId = 0;
+                SQLiteDatabase db = c.openOrCreateDatabase("data.db", Context.MODE_PRIVATE, null);
+                Cursor cursor = db.rawQuery("SELECT * FROM Cart", null);
+                while (cursor.moveToNext()){
+                    if(sqlId == position){
+                        db.execSQL("DELETE FROM Cart WHERE _id="+cursor.getInt(0));
+                        break;
+                    }
+                    sqlId++;
+                }
+            }
+        });
     }
 
     @Override
