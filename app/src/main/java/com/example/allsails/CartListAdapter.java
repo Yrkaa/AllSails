@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     //Кдасс для объекта списка
     public class ViewHolder extends  RecyclerView.ViewHolder{
         ImageView shop, iv;
-        TextView name, oldPrice, newPrice;
+        TextView name, oldPrice, newPrice, date;
         View v;
 
         public ViewHolder(View v){
@@ -45,6 +46,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             name = v.findViewById(R.id.cart_item_name);
             oldPrice = v.findViewById(R.id.cart_item_old_price);
             newPrice = v.findViewById(R.id.cart_item_new_price);
+            date = v.findViewById(R.id.cart_item_date);
             this.v = v;
         }
 
@@ -65,11 +67,19 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.name.setText(obj.name);
         holder.oldPrice.setText(obj.oldPrice+",");
         holder.newPrice.setText(obj.newPrice+" р.");
+        holder.date.setText(obj.date);
         Picasso.get().load(obj.imgUrl).into(holder.iv);
         Picasso.get().load(obj.shopUrl).into(holder.shop);
 
         //Перечеркнутый текст для старой цены
         holder.oldPrice.setPaintFlags(holder.oldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        //Кастомный шрифт
+        Typeface font = Typeface.createFromAsset(c.getAssets(), "fonts/main.ttf");
+        holder.name.setTypeface(font);
+        holder.oldPrice.setTypeface(font);
+        holder.newPrice.setTypeface(font);
+        holder.date.setTypeface(font);
 
         //Удаление эл. из корзины
         holder.v.setOnClickListener(new View.OnClickListener() {

@@ -42,7 +42,7 @@ public class CartActivity extends AppCompatActivity {
         //Заполненение массива товаров
         Cursor c = db.rawQuery("SELECT * FROM Cart", null);
         while(c.moveToNext()){
-            cartData.add(new CartItem(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5)));
+            cartData.add(new CartItem(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getString(6)));
         }
 
         //Заполнение списка товаров

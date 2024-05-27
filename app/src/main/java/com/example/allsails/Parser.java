@@ -20,6 +20,7 @@ public class Parser {
         ArrayList<String> name = new ArrayList<>();
         ArrayList<String> old = new ArrayList<>();
         ArrayList<String> newP = new ArrayList<>();
+        ArrayList<String> date = new ArrayList<>();
 
         Elements x1 = doc.getElementsByClass("price-discount");
         for(Element e: x1){
@@ -34,8 +35,13 @@ public class Parser {
             name.add(e.child(0).attr("alt"));
         }
 
+        Elements x3 = doc.getElementsByClass("item-date");
+        for(Element e: x3){
+            date.add(e.text());
+        }
+
         for(int i = 0; i < img.size(); i++){
-            sails.add(new Sail(img.get(i), name.get(i), old.get(i), newP.get(i)));
+            sails.add(new Sail(img.get(i), name.get(i), old.get(i), newP.get(i), date.get(i)));
         }
 
         return sails;
@@ -67,24 +73,23 @@ public class Parser {
                     break;
                 }
 
-                Elements cardNew = card.getElementsByClass("price-new");
-                for(Element cardE: cardNew){
-                    String data = cardE.text();
-                    newP.add(data.substring(4, data.length()));
-                    break;
-                }
-
-                Elements cardOld = card.getElementsByClass("price-old");
-                for(Element cardE: cardOld){
-                    String data = cardE.text();
-                    old.add(data.substring(11, data.length()));
+                Elements prices = card.selectXpath("//*[@id=\"price-card\"]/div[1]/div[1]/div[1]");
+                for(Element cardE: prices){
+                    String newPrice = cardE.child(0).text();
+                    newP.add(newPrice.substring(4, newPrice.length()-2));
+                    try{
+                        String oldPrice = cardE.child(1).child(0).text();
+                        old.add(oldPrice.substring(11, oldPrice.length()-2));
+                    } catch (IndexOutOfBoundsException err){
+                        old.add("Цена не указана");
+                    }
                     break;
                 }
 
             }
 
             for(int j = 0; j < img.size(); j++){
-                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j)));
+                sails.add(new Sail(img.get(j), name.get(j), old.get(j), newP.get(j), ""));
             }
 
         }

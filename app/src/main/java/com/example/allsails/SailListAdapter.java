@@ -54,6 +54,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
         holder.name.setTypeface(font);
         holder.oldPrice.setTypeface(font);
         holder.newPrice.setTypeface(font);
+        holder.date.setTypeface(font);
 
         //Старая цена
         holder.oldPrice.setText(obj.oldPrice+",");
@@ -61,6 +62,9 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
         //Новая цена
         holder.newPrice.setText(obj.newPrice+" р.");
+
+        //Дата действия акции
+        holder.date.setText(obj.date);
 
         //Картинка товара
         Picasso.get().load(obj.imgUrl).into(holder.img);
@@ -83,7 +87,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
                 cursor.close();
 
                 if(first){
-                    db.execSQL("INSERT INTO Cart(shopUrl, newPrice, oldPrice, name, imgUrl) VALUES ('"+ shopUrl+"', '"+obj.newPrice+"', '"+obj.oldPrice+"', '"+obj.name+"', '"+obj.imgUrl+"')");
+                    db.execSQL("INSERT INTO Cart(shopUrl, newPrice, oldPrice, name, imgUrl, date) VALUES ('"+ shopUrl+"', '"+obj.newPrice+"', '"+obj.oldPrice+"', '"+obj.name+"', '"+obj.imgUrl+"', '"+obj.date+"')");
                     Toast.makeText((Context) c, "Добавлено в корзину", Toast.LENGTH_SHORT).show();
                 }
 
@@ -100,7 +104,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView name, oldPrice, newPrice;
+        TextView name, oldPrice, newPrice, date;
         View v;
 
         public ViewHolder(View v){
@@ -109,6 +113,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
             name = v.findViewById(R.id.sail_name_tv);
             oldPrice = v.findViewById(R.id.sail_old_price_tv);
             newPrice = v.findViewById(R.id.sail_new_price_tv);
+            date = v.findViewById(R.id.sail_date_tv);
             this.v = v;
         }
     }
