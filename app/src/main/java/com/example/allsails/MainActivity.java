@@ -1,13 +1,19 @@
 package com.example.allsails;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     //Эл. разметки
     RecyclerView shopList;
     TextView name;
+    ImageView cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         //Инициализация эл. разметки
         shopList = findViewById(R.id.shops_rv);
         name = findViewById(R.id.name_tv);
+        cart = findViewById(R.id.cart_btn);
 
         //Назначение кастомного шрифта
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/main.ttf");
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = this.getSharedPreferences("com.example.allsails", MODE_PRIVATE);
         if(preferences.getBoolean("first", true)){
             db.execSQL("CREATE TABLE  IF NOT EXISTS Shops(_id INTEGER PRIMARY KEY AUTOINCREMENT, logo_url TEXT, name TEXT) ");
+            db.execSQL("CREATE TABLE IF NOT EXISTS Cart(_id INTEGER PRIMARY KEY AUTOINCREMENT, shopUrl TEXT, newPrice TEXT, oldPrice TEXT,  name TEXT,  imgUrl TEXT, date TEXT)");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png', 'Пятёрочка')");
             db.execSQL("INSERT INTO Shops(logo_url, name) VALUES ('https://cojo.ru/wp-content/uploads/2022/12/perekrestok-1.webp', 'Перекрёсток')");
             preferences.edit().putBoolean("first", false).apply();
@@ -62,5 +71,47 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ShopListAdapter(MainActivity.this, shopData);
         shopList.setAdapter(adapter);
 
+        //Переход в корзину
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toCart = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(toCart);
+            }
+        });
+
+        //Обучение
+        if(preferences.getBoolean("firtMainDialog", true)){
+            introduceDialog();
+            preferences.edit().putBoolean("firtMainDialog", false).apply();
+        }
+
+
     }
+
+    private void introduceDialog(){
+        //Создание диалога
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.introduce_layout);
+        dialog.show();
+
+        //Инициализация эл. разметки
+        TextView t = dialog.findViewById(R.id.introduce_text_tv);
+        Button ok = dialog.findViewById(R.id.introduce_ok_btn);
+
+        //Назначение шрифта
+        Typeface font = Typeface.createFromAsset(this.getAssets(), "fonts/main.ttf");
+        t.setTypeface(font);
+        ok.setTypeface(font);
+
+        //Работа с эл. разметки
+        t.setText("AllSails - место, где собраны скидки со всех магазинов!");
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
 }

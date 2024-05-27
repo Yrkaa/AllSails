@@ -1,6 +1,8 @@
 package com.example.allsails;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,9 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
     //Массив всех скидок
     List<Sail> data;
+
+    //Адрес на лого магаза
+    String shopUrl;
 
     @NonNull
     @Override
@@ -48,6 +54,7 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
         holder.name.setTypeface(font);
         holder.oldPrice.setTypeface(font);
         holder.newPrice.setTypeface(font);
+        holder.date.setTypeface(font);
 
         //Старая цена
         holder.oldPrice.setText(obj.oldPrice+",");
@@ -56,8 +63,37 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
         //Новая цена
         holder.newPrice.setText(obj.newPrice+" р.");
 
+        //Дата действия акции
+        holder.date.setText(obj.date);
+
         //Картинка товара
         Picasso.get().load(obj.imgUrl).into(holder.img);
+
+        //Добавление товара в корзину
+        holder.v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase db = c.openOrCreateDatabase("data.db", Context.MODE_PRIVATE, null);
+                Cursor cursor = db.rawQuery("SELECT * FROM Cart", null);
+                boolean first = true;
+                while(cursor.moveToNext()){
+                    if(cursor.getString(4).equals(obj.name)){
+                        Toast.makeText(c, "Уже есть в корзине", Toast.LENGTH_SHORT).show();
+                        first = false;
+                        break;
+                    }
+                }
+
+                cursor.close();
+
+                if(first){
+                    db.execSQL("INSERT INTO Cart(shopUrl, newPrice, oldPrice, name, imgUrl, date) VALUES ('"+ shopUrl+"', '"+obj.newPrice+"', '"+obj.oldPrice+"', '"+obj.name+"', '"+obj.imgUrl+"', '"+obj.date+"')");
+                    Toast.makeText((Context) c, "Добавлено в корзину", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -68,7 +104,8 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView img;
-        TextView name, oldPrice, newPrice;
+        TextView name, oldPrice, newPrice, date;
+        View v;
 
         public ViewHolder(View v){
             super(v);
@@ -76,12 +113,15 @@ public class SailListAdapter extends RecyclerView.Adapter<SailListAdapter.ViewHo
             name = v.findViewById(R.id.sail_name_tv);
             oldPrice = v.findViewById(R.id.sail_old_price_tv);
             newPrice = v.findViewById(R.id.sail_new_price_tv);
+            date = v.findViewById(R.id.sail_date_tv);
+            this.v = v;
         }
     }
 
-    public SailListAdapter(Context c, List<Sail> data){
+    public SailListAdapter(Context c, List<Sail> data, String shopUrl){
         this.inflater = LayoutInflater.from(c);
         this.data = data;
         this.c = c;
+        this.shopUrl = shopUrl;
     }
 }

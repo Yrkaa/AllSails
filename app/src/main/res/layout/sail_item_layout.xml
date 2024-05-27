@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="250dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
@@ -61,5 +61,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sail_old_price_tv" />
+
+    <TextView
+        android:id="@+id/sail_date_tv"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:text="Дата"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:textColor="#8F8F8F"
+        android:layout_marginTop="3dp"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sail_new_price_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
