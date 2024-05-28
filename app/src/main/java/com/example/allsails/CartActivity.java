@@ -77,7 +77,7 @@ public class CartActivity extends AppCompatActivity {
         ok.setTypeface(font);
 
         //Работа с эл. разметки
-        t.setText("Это ваша корзина. Тут собраны скидки, которые вы добавили к себе на странице приложения. Вы можете удалить какой-нибудь товар из корзины, кликнув на него");
+        t.setText("Это ваша корзина. Тут собраны скидки, которые вы добавили к себе на странице приложения. Вы можете удалить какой-нибудь товар из корзины, задержав палец на нём");
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

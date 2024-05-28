@@ -82,9 +82,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         holder.date.setTypeface(font);
 
         //Удаление эл. из корзины
-        holder.v.setOnClickListener(new View.OnClickListener() {
+        holder.v.setOnLongClickListener(new View.OnLongClickListener() {
+
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 notifyItemRemoved(position);
                 data.remove(position);
                 int sqlId = 0;
@@ -97,6 +98,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
                     }
                     sqlId++;
                 }
+                return false;
             }
         });
     }
