@@ -17,12 +17,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/cart_all_price_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Общая стоимость товаров в корзине:"
+        android:textColor="#C8D604"
+        android:textAlignment="center"
+        android:textSize="23dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_items_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cart_all_price_tv"
         app:layout_constraintTop_toBottomOf="@id/cart_name_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

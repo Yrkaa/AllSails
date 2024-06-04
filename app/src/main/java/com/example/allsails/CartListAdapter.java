@@ -87,6 +87,11 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             @Override
             public boolean onLongClick(View view) {
                 notifyItemRemoved(position);
+                if(data.get(position).shopUrl.equals("https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png"))
+                    ((CartActivity) c).allPrice-=Float.parseFloat(data.get(position).newPrice.substring(3, data.get(position).newPrice.length()));
+                else
+                    ((CartActivity) c).allPrice-=Float.parseFloat(data.get(position).newPrice.replace(",", "."));
+                ((CartActivity) c).allPriceTv.setText("Общая стоимость товаров в корзине: "+ String.format("%.2f",   ((CartActivity) c).allPrice).replace(".", ","));
                 data.remove(position);
                 int sqlId = 0;
                 SQLiteDatabase db = c.openOrCreateDatabase("data.db", Context.MODE_PRIVATE, null);

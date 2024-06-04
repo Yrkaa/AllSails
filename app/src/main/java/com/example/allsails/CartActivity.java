@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
+    //Общая цена товаров
+    float allPrice = 0;
+
     //Массив товаров в корзине
     ArrayList<CartItem> cartData = new ArrayList<>();
 
@@ -24,7 +27,7 @@ public class CartActivity extends AppCompatActivity {
     SQLiteDatabase db;
 
     //Эл. разметки
-    TextView name;
+    TextView name, allPriceTv;
     RecyclerView cartItemsList;
 
     @Override
@@ -35,6 +38,7 @@ public class CartActivity extends AppCompatActivity {
         //Инициализация эл. разметки
         name = findViewById(R.id.cart_name_tv);
         cartItemsList = findViewById(R.id.cart_items_rv);
+        allPriceTv = findViewById(R.id.cart_all_price_tv);
 
         //Инициализация бд
         db = getBaseContext().openOrCreateDatabase("data.db", MODE_PRIVATE, null);
@@ -48,6 +52,15 @@ public class CartActivity extends AppCompatActivity {
         while(c.moveToNext()){
             cartData.add(new CartItem(c.getString(1), c.getString(2), c.getString(3), c.getString(4), c.getString(5), c.getString(6)));
         }
+
+        //Подсчет общей цены
+        for(CartItem e: cartData){
+            if(e.shopUrl.equals("https://www.x5.ru/wp-content/uploads/2022/09/5ka_logo_rgb_02-e1663673744463-1024x406.png"))
+                allPrice+=Float.parseFloat(e.newPrice.substring(3, e.newPrice.length()));
+            else
+                allPrice+=Float.parseFloat(e.newPrice.replace(",", "."));
+        }
+        allPriceTv.setText(allPriceTv.getText().toString()+" "+String.format("%.2f", allPrice).replace(".", ","));
 
         //Заполнение списка товаров
         CartListAdapter adapter = new CartListAdapter(this, cartData);
@@ -77,7 +90,7 @@ public class CartActivity extends AppCompatActivity {
         ok.setTypeface(font);
 
         //Работа с эл. разметки
-        t.setText("Это ваша корзина. Тут собраны скидки, которые вы добавили к себе на странице приложения. Вы можете удалить какой-нибудь товар из корзины, задержав палец на нём");
+        t.setText("Это ваша корзина. Тут собраны скидки, которые вы добавили к себе на странице приложения. Вы можете удалить какой-нибудь товар из корзины, задержав палец на нём. \nТакже снизу страницы написана общая цена всех товаров в корзине.");
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
